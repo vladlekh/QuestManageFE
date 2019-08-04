@@ -1,53 +1,61 @@
 import React from 'react';
-import './App.css';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { resetAction, toggleBox } from "./store/room1/actions";
-import { toggleCoffin } from "./store/room1/actions/toggle-coffin";
-import { Layout } from "./layouts/Layout";
+import { noop } from "lodash";
+import './App.css';
+import { getStructureAction } from "./store/app/actions";
+import { selectAppLoading, selectMenuConfig, selectRouterConfig } from "./store/app/selectors";
+import { Preloader } from "./components/preloader";
+import { Layout } from "./layouts";
+import { AppRouter } from "./router";
 
-class App extends React.PureComponent {
+
+export class AppComponent extends React.Component {
   static propTypes = {
-    boxState: PropTypes.bool.isRequired,
-    lightState: PropTypes.bool.isRequired,
-    toggleBoxState: PropTypes.func.isRequired,
-    toggleLightState: PropTypes.func.isRequired,
-    resetBox: PropTypes.func.isRequired,
+    loading: PropTypes.bool,
+    routerConfig: PropTypes.arrayOf(PropTypes.shape({
+      path: PropTypes.string,
+      exact: PropTypes.optional,
+      component: PropTypes.func,
+    })),
+    menuConfig: PropTypes.arrayOf(PropTypes.shape({
+      path: PropTypes.string,
+      name: PropTypes.string,
+      title: PropTypes.string,
+      icon: PropTypes.node,
+    })),
+    getStructure: PropTypes.func,
   };
 
   static defaultProps = {
-    boxState: false
+    loading: false,
+    routerConfig: [],
+    getStructure: noop,
   };
 
-  handleBtnClick = () => {
-    this.props.toggleBoxState();
-  };
-
-  handleSwitchLightClick = () => {
-    this.props.toggleLightState();
-  };
-
-  handleResetClick = () => {
-    this.props.resetBox();
-  };
+  componentDidMount() {
+    this.props.getStructure();
+  }
 
   render() {
-    return (
-      <Layout>
-      </Layout>
-    );
+    return this.props.loading
+      ? <Preloader full/>
+      : (
+        <Layout menuConfig={this.props.menuConfig}>
+          <AppRouter routerConfig={this.props.routerConfig}/>
+        </Layout>
+      )
   }
 }
 
 const mapStateToProps = state => ({
-  boxState: state.room1.box,
-  lightState: state.room1.light,
+  loading: selectAppLoading(state),
+  routerConfig: selectRouterConfig(state),
+  menuConfig: selectMenuConfig(state),
 });
 
 const mapDispatchToProps = {
-  toggleBoxState: toggleBox,
-  toggleLightState: toggleCoffin,
-  resetBox: resetAction,
+  getStructure: getStructureAction,
 };
 
-export default App = connect(mapStateToProps, mapDispatchToProps)(App);
+export const App = connect(mapStateToProps, mapDispatchToProps)(AppComponent);

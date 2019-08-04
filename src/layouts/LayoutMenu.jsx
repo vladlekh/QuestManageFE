@@ -1,18 +1,19 @@
 import React from "react";
-import { menuConfig } from "../router";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import List from "@material-ui/core/List";
 import { Link, Router } from 'react-router-dom';
+import {
+	ListItem,
+	ListItemText,
+	List,
+	ListItemIcon
+} from "@material-ui/core";
 import { routerHistory } from "../router/history";
 
-export function LayoutMenu() {
+export function LayoutMenu({ menuConfig }) {
 	return (
 		<List>
 			<Router history={routerHistory}>
 				{menuConfig.map(item => (
-					<Link to={item.path} className="nav_item">
+					<Link to={item.path} className="nav_item" key={item.name}>
 						<ListItem button key={item.name}>
 							<ListItemIcon>{item.icon}</ListItemIcon>
 							<ListItemText primary={item.title}/>
