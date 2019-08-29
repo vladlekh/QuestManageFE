@@ -1,8 +1,8 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { createSelector } from "reselect";
-import { Room } from "../../../views/room";
-import { selectRoomsList } from "./rooms-list.selector";
+import { Room } from "../../../feature/room";
+import { selectRoomsList } from "../../room/selectors/rooms-list.selector";
 
 const staticRoutes = [
 	{

@@ -3,6 +3,8 @@ import { eventChannel } from 'redux-saga'
 import io from "socket.io-client";
 import { reduce } from "lodash";
 import { ActionHelper } from "./action.helper";
+import { portAction } from "../store/app/actions";
+import { switchLightAction } from "../store/light/actions/switch-light.action";
 
 export class SagaHelper {
 	static SOCKET_SERVER_URL = 'http://localhost:1081';
@@ -27,8 +29,8 @@ export class SagaHelper {
 
 		// then put the new data into the reducer
 		while (true) {
-			const payload = yield take(socketChannel);
-			yield put({ type: payload });
+			const action = yield take(socketChannel);
+			yield put(action);
 		}
 	};
 
@@ -43,10 +45,22 @@ export class SagaHelper {
 
 	static createSocketChannel = (socket, { controls }) => eventChannel((emit) => {
 		const handler = (data) => {
+			console.log('HANDLER', data, socket);
 			emit(data);
 		};
+		socket.on('light', () => handler(switchLightAction()));
 		reduce(controls, (acc, { socketReply, actionReply, ...c }) => {
-			socket.on(socketReply, () => handler(actionReply));
+			socket.on(socketReply, () => handler({ type: actionReply }));
+			socket.on('port_disconnected', ({ path }) => handler(portAction({
+				success: false,
+				port: path,
+				message: 'Отключен'
+			})));
+			socket.on('port_connected', ({ path }) => handler(portAction({
+				success: true,
+				port: path,
+				message: 'Подключен'
+			})));
 			return acc;
 		}, {});
 		return () => {
@@ -56,9 +70,11 @@ export class SagaHelper {
 
 	static sagaEmitter = function* (socket, name) {
 		yield takeLatest(ActionHelper.createEmitActionType(name), SagaHelper.emit, socket);
+		yield takeLatest(ActionHelper.EMIT_ACTION, SagaHelper.emit, socket);
 	};
 
 	static emit = function (socket, { payload }) {
-		socket.emit(payload.event);
+		console.log('PAYLOAD', payload);
+		socket.emit(payload.event, payload.data);
 	}
 }

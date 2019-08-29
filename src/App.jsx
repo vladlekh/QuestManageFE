@@ -8,6 +8,7 @@ import { selectAppLoading, selectMenuConfig, selectRouterConfig } from "./store/
 import { Preloader } from "./components/preloader";
 import { Layout } from "./layouts";
 import { AppRouter } from "./router";
+import { Notifier } from "./feature/notifier";
 
 
 export class AppComponent extends React.Component {
@@ -25,6 +26,7 @@ export class AppComponent extends React.Component {
       icon: PropTypes.node,
     })),
     getStructure: PropTypes.func,
+    closeNotification: PropTypes.func,
   };
 
   static defaultProps = {
@@ -41,9 +43,12 @@ export class AppComponent extends React.Component {
     return this.props.loading
       ? <Preloader full/>
       : (
-        <Layout menuConfig={this.props.menuConfig}>
-          <AppRouter routerConfig={this.props.routerConfig}/>
-        </Layout>
+        <>
+          <Notifier/>
+          <Layout menuConfig={this.props.menuConfig}>
+            <AppRouter routerConfig={this.props.routerConfig}/>
+          </Layout>
+        </>
       )
   }
 }

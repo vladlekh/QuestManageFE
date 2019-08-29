@@ -4,11 +4,11 @@ import { ActionHelper } from "./action.helper";
 
 export class ReducerHelper {
 	static createReducer(config) {
-		return reduce(config, (acc, val, key) => {
+		return reduce(config, (acc, {displayName, socketNamespace, ...val}, key) => {
 			const { controls, actionTypeMap } = this.createInitialState(key, val);
 			return {
 				...acc,
-				[key]: (state = { controls, namespace: val.socketNamespace }, action) => {
+				[key]: (state = { controls, namespace: socketNamespace, displayName }, action) => {
 					if (actionTypeMap.has(action.type)) {
 						const name = actionTypeMap.get(action.type);
 						return {
@@ -48,12 +48,13 @@ export class ReducerHelper {
 		const controls = {};
 		const actionTypeMap = new Map();
 		const upperName = constantCase(key);
-		val.ports.forEach(({ actions }) => {
+		val.ports.forEach(({ actions, path }) => {
 			actions.forEach(action => {
 				const actionReply = `[${upperName}] ${constantCase(action.socketReply)}_ACTION`;
 				controls[action.name] = {
 					...action,
-					action: `[${upperName}] ${constantCase(action.cmd)}_ACTION`,
+					// action: `[${upperName}] ${constantCase(action.cmd)}_ACTION`,
+					path,
 					actionReply,
 					warning: false,
 					state: false,

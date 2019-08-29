@@ -1,7 +1,6 @@
 import React from "react";
-import { Table as MTable, TableBody } from '@material-ui/core';
+import { Table as MTable, TableBody, TableCell } from '@material-ui/core';
 import { TableHead } from "./TableHeader";
-import { TableCell } from "./TableCell";
 import { TableRow } from "./TableRow";
 
 export function Table(props) {

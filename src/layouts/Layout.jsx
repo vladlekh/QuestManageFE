@@ -13,6 +13,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { LayoutMenu } from "./LayoutMenu";
+import { Header } from "../feature/header";
 
 export function Layout({ children, menuConfig }) {
 	const classes = useStyles();
@@ -48,6 +49,7 @@ export function Layout({ children, menuConfig }) {
 					>
 						<MenuIcon />
 					</IconButton>
+					<Header />
 				</Toolbar>
 			</AppBar>
 			<Drawer
