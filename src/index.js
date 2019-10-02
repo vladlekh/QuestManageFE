@@ -1,11 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from "react-redux";
-import { SnackbarProvider } from "notistack";
+import { ThemeProvider } from "styled-components";
+import { SnackbarProvider } from "notistack"
+import { createMuiTheme } from "@material-ui/core";
 import { store } from "./store/store";
 import * as serviceWorker from './serviceWorker';
 import './index.css';
 import { App } from './App';
+
+const defaultTheme = createMuiTheme();
 
 ReactDOM.render(
 	<Provider store={store}>
@@ -13,7 +17,9 @@ ReactDOM.render(
 			vertical: 'top',
 			horizontal: 'right'
 		}}>
-			<App/>
+			<ThemeProvider theme={defaultTheme}>
+				<App/>
+			</ThemeProvider>
 		</SnackbarProvider>
 	</Provider>, document.getElementById('root'));
 

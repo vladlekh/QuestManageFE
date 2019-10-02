@@ -1,84 +1,52 @@
-import React, { useCallback, useState } from "react";
-import Button from "@material-ui/core/Button";
-import { makeStyles, withStyles } from "@material-ui/core";
-import { green } from "@material-ui/core/colors";
-import PlayIcon from "@material-ui/icons/PlayArrow"
-import { StartQuestModal } from "../start-quest";
-import { startQuestAction } from "../../store/quest/actions";
+import React, { useCallback } from "react";
 import { connect } from "react-redux";
+import * as PropTypes from 'prop-types';
+import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core";
 import { ActionHelper } from "../../utils/action.helper";
-import { switchLightAction } from "../../store/light/actions/switch-light.action";
+import { selectQuestPaused } from "../../store/quest/selectors";
+import { setStopModalOpenedAction } from "../../store/modal/actions";
+import { HeaderControls } from "./HeaderControls";
 
-const useStyles = makeStyles(theme => ({
-	icon: {
-		marginRight: theme.spacing(1),
-	},
-	button: {
-		margin: theme.spacing(1),
-	},
-	grow: {
-		flexGrow: 1,
-	},
-}));
-
-const StartButton = withStyles({
-	root: {
-		backgroundColor: green[500],
-		borderColor: green[500],
-		color: '#fff',
-		'&:hover': {
-			backgroundColor: green[600],
-			borderColor: green[600],
-		},
-		'&:active': {
-			boxShadow: 'none',
-			backgroundColor: green[700],
-			borderColor: green[700],
-		}
-	}
-})(Button);
-
-export function HeaderComponent({ startQuest, reset, switchLight }) {
+export function HeaderComponent({ questPaused, stopQuest, emit }) {
 	const classes = useStyles();
 
-	const [ open, setOpen ] = useState(false);
-
-	const handleClose = useCallback(() => setOpen(false), []);
-
-	const handleOpen = useCallback(() => setOpen(true), []);
-
-	const handleAccept = useCallback(() => {
-		startQuest();
-		handleClose();
-	}, [ startQuest, handleClose ]);
-
-	const handleReset = useCallback(() => {
-		reset('reset')
-	}, [ reset ]);
-
-	const handleLight = useCallback(() => {
-		switchLight('reset')
-	}, [ switchLight ]);
+	const handleReset = useCallback(() => emit('reset'), [ emit ]);
 
 	return (
 		<>
-			<StartButton variant="contained" onClick={handleOpen}>
-				<PlayIcon className={classes.icon}/>
-				Начать
-			</StartButton>
-
+			<HeaderControls className={classes.controls}/>
 			<div className={classes.grow}/>
-			<Button className={classes.button} variant="contained" color="primary" onClick={handleLight}>Свет</Button>
+			<Button className={classes.button} disabled={!questPaused} variant="contained" color="secondary"
+							onClick={stopQuest}>Завершить</Button>
 			<Button className={classes.button} variant="contained" color="secondary" onClick={handleReset}>Reset</Button>
-			<StartQuestModal open={open} onClose={handleClose} onAccept={handleAccept}/>
 		</>
 	)
 }
 
-export const mapDispatchToProps = {
-	startQuest: startQuestAction,
-	reset: ActionHelper.emit,
-	switchLight: switchLightAction,
+HeaderComponent.propTypes = {
+	questPaused: PropTypes.bool,
+	stopQuest: PropTypes.func.isRequired,
+	emit: PropTypes.func.isRequired,
 };
 
-export const Header = connect(null, mapDispatchToProps)(HeaderComponent);
+HeaderComponent.defaultProps = {
+	questPaused: false,
+};
+
+export const mapStateToProps = (state) => ({
+	questPaused: selectQuestPaused(state)
+});
+
+export const mapDispatchToProps = {
+	stopQuest: () => setStopModalOpenedAction(true),
+	emit: ActionHelper.emit,
+};
+
+export const Header = connect(mapStateToProps, mapDispatchToProps)(HeaderComponent);
+
+const useStyles = makeStyles(() => ({
+	grow: {
+		flexGrow: 7,
+	}
+}));

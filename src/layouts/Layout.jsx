@@ -1,21 +1,18 @@
 import React from 'react';
 import clsx from 'clsx';
+import { connect } from "react-redux";
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {
-	Drawer,
-	AppBar,
-	Toolbar,
-	CssBaseline,
-	Divider,
-	IconButton,
-} from '@material-ui/core';
+import { AppBar, CssBaseline, Divider, Drawer, IconButton, Toolbar, } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import { LayoutMenu } from "./LayoutMenu";
 import { Header } from "../feature/header";
+import { StartQuestModal } from '../feature/start-quest';
+import { StopQuestModal } from "../feature/stop-quest";
+import { selectQuestIsInitialized } from "../store/quest/selectors";
+import { LayoutMenuItems } from "./LayoutMenuItems";
 
-export function Layout({ children, menuConfig }) {
+export function LayoutComponent({ children, menuConfig, questIsInitialized }) {
 	const classes = useStyles();
 	const theme = useTheme();
 	const [open, setOpen] = React.useState(true);
@@ -34,7 +31,7 @@ export function Layout({ children, menuConfig }) {
 			<AppBar
 				position="fixed"
 				className={clsx(classes.appBar, {
-					[classes.appBarShift]: open,
+					[classes.appBarShift]: open && questIsInitialized,
 				})}
 			>
 				<Toolbar>
@@ -52,35 +49,51 @@ export function Layout({ children, menuConfig }) {
 					<Header />
 				</Toolbar>
 			</AppBar>
-			<Drawer
-				variant="permanent"
-				className={clsx(classes.drawer, {
-					[classes.drawerOpen]: open,
-					[classes.drawerClose]: !open,
-				})}
-				classes={{
-					paper: clsx({
+			{questIsInitialized && (
+				<Drawer
+					variant="permanent"
+					className={clsx(classes.drawer, {
 						[classes.drawerOpen]: open,
 						[classes.drawerClose]: !open,
-					}),
-				}}
-				open={open}
-			>
-				<div className={classes.toolbar}>
-					<IconButton onClick={handleDrawerClose}>
-						{theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-					</IconButton>
-				</div>
-				<Divider />
-				<LayoutMenu menuConfig={menuConfig}/>
-			</Drawer>
+					})}
+					classes={{
+						paper: clsx({
+							[classes.drawerOpen]: open,
+							[classes.drawerClose]: !open,
+						}),
+					}}
+					open={open}
+				>
+					<div className={classes.toolbar}>
+						<IconButton onClick={handleDrawerClose}>
+							{theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
+						</IconButton>
+					</div>
+					<Divider/>
+					<LayoutMenuItems menuConfig={menuConfig}/>
+				</Drawer>
+			)}
 			<main className={classes.content}>
-				<div className={classes.toolbar} />
 				{children}
 			</main>
+			<AppBar position="fixed" className={classes.bottomBar}>
+				<Toolbar>
+					<IconButton edge="start" color="inherit" aria-label="open drawer">
+						<MenuIcon/>
+					</IconButton>
+				</Toolbar>
+			</AppBar>
+			<StartQuestModal/>
+			<StopQuestModal />
 		</div>
 	);
 }
+
+const mapStateToProps = state => ({
+	questIsInitialized: selectQuestIsInitialized(state),
+});
+
+export const Layout = connect(mapStateToProps)(LayoutComponent);
 
 const drawerWidth = 240;
 
@@ -141,6 +154,12 @@ const useStyles = makeStyles(theme => ({
 	},
 	content: {
 		flexGrow: 1,
-		padding: theme.spacing(3),
+		padding: theme.spacing(10, 3),
+		height: '100vh',
 	},
+	bottomBar: {
+		top: 'auto',
+		bottom: 0,
+		backgroundColor: '#fff',
+	}
 }));

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import { makeStyles, CircularProgress } from "@material-ui/core";
+import { CircularProgress, makeStyles } from "@material-ui/core";
 
 export function Preloader(props) {
 	const classes = useStyles();
@@ -9,34 +9,19 @@ export function Preloader(props) {
 	return (
 		<div className={clsx(classes.wrapper, {
 			[classes.wrapperFull]: props.full,
-		})}>
+		})} color={props.color}>
 			<CircularProgress
 				className={classes.progress}
 				size={props.size}
-				color={props.color}
+				color="inherit"
 			/>
 		</div>
 	)
 }
 
-const useStyles = makeStyles(theme => ({
-	wrapper: {
-		width: '100%',
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	wrapperFull: {
-		height: '100%',
-	},
-	progress: {
-		margin: theme.spacing(2),
-	},
-}));
-
 Preloader.propTypes = {
 	size: PropTypes.number,
-	color: PropTypes.oneOf(['primary', 'secondary']),
+	color: PropTypes.string,
 	full: PropTypes.bool,
 };
 
@@ -45,3 +30,18 @@ Preloader.defaultProps = {
 	color: 'primary',
 	full: false,
 };
+const useStyles = makeStyles(theme => ({
+	wrapper: {
+		width: '100%',
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		color: props => props.color,
+	},
+	wrapperFull: {
+		height: '100%',
+	},
+	progress: {
+		margin: theme.spacing(2),
+	},
+}));

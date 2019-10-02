@@ -5,6 +5,7 @@ import { reduce } from "lodash";
 import { ActionHelper } from "./action.helper";
 import { portAction } from "../store/app/actions";
 import { switchLightAction } from "../store/light/actions/switch-light.action";
+import { portReadyAction } from '../store/ports/actions';
 
 export class SagaHelper {
 	static SOCKET_SERVER_URL = 'http://localhost:1081';
@@ -50,7 +51,10 @@ export class SagaHelper {
 		};
 		socket.on('light', () => handler(switchLightAction()));
 		reduce(controls, (acc, { socketReply, actionReply, ...c }) => {
-			socket.on(socketReply, () => handler({ type: actionReply }));
+			socket.on(socketReply, (data) => {
+				console.log('DATA', data);
+				handler({ type: actionReply })
+			});
 			socket.on('port_disconnected', ({ path }) => handler(portAction({
 				success: false,
 				port: path,
@@ -61,6 +65,7 @@ export class SagaHelper {
 				port: path,
 				message: 'Подключен'
 			})));
+			socket.on('arduinoStarted', ({ path }) => handler(portReadyAction(path)));
 			return acc;
 		}, {});
 		return () => {

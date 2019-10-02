@@ -4,7 +4,8 @@ export class ActionHelper {
 	static eventEnum = {
 		setPersons: 'set.persons',
 		turnLight: 'turn.light',
-		switchLight: 'switch.light'
+		switchLight: 'switch.light',
+		reset: 'reset',
 	};
 
 	static createEmitActionType(name) {

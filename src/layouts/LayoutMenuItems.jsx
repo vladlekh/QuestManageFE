@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import { routerHistory } from "../router/history";
 
-export function LayoutMenu({ menuConfig }) {
+export function LayoutMenuItems({ menuConfig }) {
 	return (
 		<List>
 			<Router history={routerHistory}>

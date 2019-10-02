@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import {
 	Dialog,
 	DialogActions,
@@ -14,9 +15,11 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
-import { selectQuestPersons } from "../../store/quest/selectors";
 import { updateQuestPersonsAction } from "../../store/quest/actions";
-import { connect } from "react-redux";
+import { selectQuestPersons } from "../../store/quest/selectors";
+import { setStartModalOpenedAction } from "../../store/modal/actions";
+import { selectStartModalIsOpened } from "../../store/modal/selectors";
+import { initializePortsAction } from "../../store/ports/actions";
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -30,7 +33,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-export function StartQuestComponent({ open, value, onClose, onAccept, onChange }) {
+export function StartQuestComponent({ opened, value, onClose, onAccept, onChange }) {
 	const classes = useStyles();
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -40,7 +43,7 @@ export function StartQuestComponent({ open, value, onClose, onAccept, onChange }
 	};
 
 	return (
-		<Dialog fullScreen={fullScreen} open={open} onClose={onClose}>
+		<Dialog fullScreen={fullScreen} open={opened} onClose={onClose}>
 			<DialogTitle>Запуск квеста</DialogTitle>
 			<DialogContent>
 				<DialogContentText>Выберите количество игроков</DialogContentText>
@@ -76,10 +79,13 @@ export function StartQuestComponent({ open, value, onClose, onAccept, onChange }
 }
 
 const mapStateToProps = state => ({
+	opened: selectStartModalIsOpened(state),
 	value: selectQuestPersons(state),
 });
 
 const mapDispatchToProps = {
+	onClose: () => setStartModalOpenedAction(false),
+	onAccept: initializePortsAction,
 	onChange: updateQuestPersonsAction,
 };
 
