@@ -44,13 +44,23 @@ export class SagaHelper {
 		});
 	};
 
-	static createSocketChannel = (socket, { controls }) => eventChannel((emit) => {
+	static createSocketChannel = (socket, { controls, name: roomName }) => eventChannel((emit) => {
 		const handler = (data) => {
 			console.log('HANDLER', data, socket);
 			emit(data);
 		};
 		socket.on('light', () => handler(switchLightAction()));
 		reduce(controls, (acc, { socketReply, actionReply, ...c }) => {
+			if (roomName === 'room5' && c.name === 'chair') {
+				socket.on("waterFlow", () => {
+					socket.emit("water.flow");
+				})
+			}
+			if (roomName === 'room5' && c.name === 'rfidAccess') {
+				socket.on(socketReply, () => {
+					socket.emit("rfid.accessed");
+				})
+			}
 			socket.on(socketReply, (data) => {
 				console.log('DATA', data);
 				handler({ type: actionReply })
