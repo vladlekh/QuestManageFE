@@ -50,6 +50,16 @@ export class SagaHelper {
 			emit(data);
 		};
 		socket.on('light', () => handler(switchLightAction()));
+		socket.on('port_disconnected', ({ path }) => handler(portAction({
+			success: false,
+			port: path,
+			message: 'Отключен'
+		})));
+		socket.on('port_connected', ({ path }) => handler(portAction({
+			success: true,
+			port: path,
+			message: 'Подключен'
+		})));
 		reduce(controls, (acc, { socketReply, actionReply, ...c }) => {
 			if (roomName === 'room5' && c.name === 'chair') {
 				socket.on("waterFlow", () => {
@@ -65,16 +75,6 @@ export class SagaHelper {
 				console.log('DATA', data);
 				handler({ type: actionReply })
 			});
-			socket.on('port_disconnected', ({ path }) => handler(portAction({
-				success: false,
-				port: path,
-				message: 'Отключен'
-			})));
-			socket.on('port_connected', ({ path }) => handler(portAction({
-				success: true,
-				port: path,
-				message: 'Подключен'
-			})));
 			socket.on('arduinoStarted', ({ path }) => handler(portReadyAction(path)));
 			return acc;
 		}, {});
