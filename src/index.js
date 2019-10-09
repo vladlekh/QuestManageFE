@@ -14,8 +14,8 @@ const defaultTheme = createMuiTheme();
 ReactDOM.render(
 	<Provider store={store}>
 		<SnackbarProvider anchorOrigin={{
-			vertical: 'top',
-			horizontal: 'right'
+			vertical: 'bottom',
+			horizontal: 'left'
 		}}>
 			<ThemeProvider theme={defaultTheme}>
 				<App/>

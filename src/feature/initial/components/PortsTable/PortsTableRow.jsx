@@ -15,14 +15,14 @@ export function PortsTableRowComponent({ data, initializing }) {
 	}, [ data.connected ]);
 
 	const portInitializedCellContent = useMemo(() => {
-		const label = initializing
+		const label = !data.ready && initializing
 			? <Preloader size={20}/>
 			: data.ready
 				? 'Готово'
 				: 'Не готово';
 
 		return (
-			<Badge success={data.ready} primary={initializing} label={label}/>
+			<Badge success={data.ready} primary={!data.ready && initializing} label={label}/>
 		);
 	}, [ data.ready, initializing ]);
 

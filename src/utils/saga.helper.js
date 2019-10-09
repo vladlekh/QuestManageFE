@@ -3,9 +3,8 @@ import { eventChannel } from 'redux-saga'
 import io from "socket.io-client";
 import { reduce } from "lodash";
 import { ActionHelper } from "./action.helper";
-import { portAction } from "../store/app/actions";
 import { switchLightAction } from "../store/light/actions/switch-light.action";
-import { portReadyAction } from '../store/ports/actions';
+import { portReadyAction, portConnectionAction } from '../store/ports/actions';
 
 export class SagaHelper {
 	static SOCKET_SERVER_URL = 'http://localhost:1081';
@@ -50,12 +49,12 @@ export class SagaHelper {
 			emit(data);
 		};
 		socket.on('light', () => handler(switchLightAction()));
-		socket.on('port_disconnected', ({ path }) => handler(portAction({
+		socket.on('port_disconnected', ({ path }) => handler(portConnectionAction({
 			success: false,
 			port: path,
 			message: 'Отключен'
 		})));
-		socket.on('port_connected', ({ path }) => handler(portAction({
+		socket.on('port_connected', ({ path }) => handler(portConnectionAction({
 			success: true,
 			port: path,
 			message: 'Подключен'

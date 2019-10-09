@@ -1,7 +1,13 @@
 import { reduce } from 'lodash';
 import constantCase from "constant-case";
 import { ActionHelper } from "./action.helper";
-import { SET_PORT_INITIALIZING_ACTION, SET_PORT_READY_ACTION } from '../store/ports/actions';
+import {
+	CLEAR_PORTS_ACTION,
+	SET_PORT_CONNECTED_ACTION,
+	SET_PORT_INITIALIZING_ACTION,
+	SET_PORT_READY_ACTION
+} from '../store/ports/actions';
+import { CLEAR_ROOMS_ACTION } from "../store/room/actions";
 
 export class ReducerHelper {
 	static createRoomReducer(config) {
@@ -35,6 +41,21 @@ export class ReducerHelper {
 									warning: true,
 								}
 							}
+						}
+					}
+					if (action.type === CLEAR_ROOMS_ACTION) {
+						return {
+							...state,
+							controls: reduce(state.controls, (acc, control, name) => {
+								return {
+									...acc,
+									[name]: {
+										...control,
+										state: false,
+										warning: false,
+									}
+								}
+							}, {})
 						}
 					}
 					return {
@@ -77,11 +98,24 @@ export class ReducerHelper {
 						list: state.list.map(port => port.path === path ? { ...port, ready: value } : { ...port })
 					}
 				}
+				case SET_PORT_CONNECTED_ACTION: {
+					const { path, value } = action.payload;
+					return {
+						...state,
+						list: state.list.map(port => port.path === path ? { ...port, connected: value } : { ...port })
+					}
+				}
 				case SET_PORT_INITIALIZING_ACTION: {
 					const { initializing } = action.payload;
 					return {
 						...state,
 						initializing,
+					}
+				}
+				case CLEAR_PORTS_ACTION: {
+					return {
+						...state,
+						list: state.list.map(port => ({ ...port, ready: false }))
 					}
 				}
 				default: {
@@ -98,7 +132,7 @@ export class ReducerHelper {
 			list: ports.map(port => ({
 				...port,
 				ready: false,
-				connected: false,
+				connected: true,
 			})),
 			initializing: false,
 		}
