@@ -12,7 +12,7 @@ export function GuardComponent(props) {
 }
 
 const mapStateToProps = state => ({
-	questIsInitialized: selectQuestIsInitialized(state),
+	questIsInitialized: true,
 });
 
 export const Guard = connect(mapStateToProps)(GuardComponent);

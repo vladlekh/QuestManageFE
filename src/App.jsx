@@ -44,7 +44,7 @@ export class AppComponent extends React.Component {
       ? <Preloader full/>
       : (
         <>
-          <Notifier/>
+          {/*<Notifier/>*/}
           <Layout menuConfig={this.props.menuConfig}>
             <AppRouter routerConfig={this.props.routerConfig}/>
           </Layout>

@@ -11,6 +11,7 @@ import { StartQuestModal } from '../feature/start-quest';
 import { StopQuestModal } from "../feature/stop-quest";
 import { selectQuestIsInitialized } from "../store/quest/selectors";
 import { LayoutMenuItems } from "./LayoutMenuItems";
+import { LayoutAudioItems } from './LayoutAudioItems';
 
 export function LayoutComponent({ children, menuConfig, questIsInitialized }) {
 	const classes = useStyles();
@@ -71,18 +72,20 @@ export function LayoutComponent({ children, menuConfig, questIsInitialized }) {
 					</div>
 					<Divider/>
 					<LayoutMenuItems menuConfig={menuConfig}/>
+					<Divider />
+					<LayoutAudioItems />
 				</Drawer>
 			)}
 			<main className={classes.content}>
 				{children}
 			</main>
-			<AppBar position="fixed" className={classes.bottomBar}>
-				<Toolbar>
-					<IconButton edge="start" color="inherit" aria-label="open drawer">
-						<MenuIcon/>
-					</IconButton>
-				</Toolbar>
-			</AppBar>
+			{/*<AppBar position="fixed" className={classes.bottomBar}>*/}
+			{/*	<Toolbar>*/}
+			{/*		<IconButton edge="start" color="inherit" aria-label="open drawer">*/}
+			{/*			<MenuIcon/>*/}
+			{/*		</IconButton>*/}
+			{/*	</Toolbar>*/}
+			{/*</AppBar>*/}
 			<StartQuestModal/>
 			<StopQuestModal />
 		</div>
@@ -90,7 +93,7 @@ export function LayoutComponent({ children, menuConfig, questIsInitialized }) {
 }
 
 const mapStateToProps = state => ({
-	questIsInitialized: selectQuestIsInitialized(state),
+	questIsInitialized: true,
 });
 
 export const Layout = connect(mapStateToProps)(LayoutComponent);

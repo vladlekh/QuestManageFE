@@ -3,6 +3,7 @@ import { AppApi } from "../../../api";
 import { ReducerHelper } from "../../../utils/reducer.helper";
 import { store } from "../../store";
 import { createSagaAction, getStructureSuccessfulAction } from "../actions";
+import { loadAudioListAction } from '../../audio/actions';
 
 export function* getStructureSaga() {
 	try {
@@ -12,6 +13,7 @@ export function* getStructureSaga() {
 		store.attachReducers({ rooms: ReducerHelper.createRoomReducer(config)});
 		yield put(createSagaAction());
 		yield put(getStructureSuccessfulAction(config));
+		yield put(loadAudioListAction());
 	} catch (e) {
 		alert(e);
 	}

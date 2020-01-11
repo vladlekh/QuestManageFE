@@ -4,11 +4,12 @@ import { applyMiddleware } from "redux";
 import { rootReducer } from "./root-reducer";
 import { rootSaga } from "./root-saga";
 import { sagaMiddleware } from "./saga";
+import { audioMiddleware } from '../middleware/audio.middleware';
 
 export const store = createStore(
 	rootReducer,
 	composeWithDevTools(
-		applyMiddleware(sagaMiddleware)
+		applyMiddleware(sagaMiddleware, audioMiddleware),
 	)
 );
 sagaMiddleware.run(rootSaga);
