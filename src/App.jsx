@@ -37,6 +37,7 @@ export class AppComponent extends React.Component {
 
   componentDidMount() {
     this.props.getStructure();
+    // window.onbeforeunload = function () {return false;}
   }
 
   render() {

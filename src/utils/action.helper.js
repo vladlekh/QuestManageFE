@@ -1,9 +1,15 @@
 export class ActionHelper {
 	static EMIT_ACTION = 'EMIT_ACTION';
 
+	static lightEnum = {
+		ON: 'ON',
+		OFF: 'OFF'
+	};
+
 	static eventEnum = {
 		setPersons: 'set.persons',
 		turnLight: 'turn.light',
+		startLight: 'start.light',
 		switchLight: 'switch.light',
 		reset: 'reset',
 	};

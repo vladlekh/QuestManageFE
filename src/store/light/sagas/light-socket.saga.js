@@ -2,7 +2,7 @@ import { call, fork, put, take, takeLatest } from "@redux-saga/core/effects";
 import io from "socket.io-client";
 import { eventChannel } from "@redux-saga/core";
 import { ActionHelper } from "../../../utils/action.helper";
-import { TURN_ON_LIGHT_ACTION } from "../actions";
+import { START_LIGHT_ACTION, TURN_ON_LIGHT_ACTION } from '../actions';
 import { SWITCH_LIGHT_ACTION } from "../actions/switch-light.action";
 
 const SOCKET_SERVER_URL = 'http://localhost:1081';
@@ -47,6 +47,7 @@ function createSocketChannel (socket) {
 function* sagaEmitter(socket) {
 	yield takeLatest(TURN_ON_LIGHT_ACTION, emit, socket);
 	yield takeLatest(SWITCH_LIGHT_ACTION, emit, socket);
+	yield takeLatest(START_LIGHT_ACTION, emit, socket);
 	yield takeLatest(ActionHelper.EMIT_ACTION, emit, socket);
 }
 
