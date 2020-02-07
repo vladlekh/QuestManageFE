@@ -7,8 +7,9 @@ import { ActionHelper } from "../../utils/action.helper";
 import { selectQuestPaused } from "../../store/quest/selectors";
 import { setStopModalOpenedAction } from "../../store/modal/actions";
 import { HeaderControls } from "./HeaderControls";
+import { switchLightAction } from '../../store/light/actions';
 
-export function HeaderComponent({ questPaused, stopQuest, emit }) {
+export function HeaderComponent({ questPaused, stopQuest, emit, switchLight }) {
 	const classes = useStyles();
 
 	const handleReset = useCallback(() => emit('reset'), [ emit ]);
@@ -19,6 +20,8 @@ export function HeaderComponent({ questPaused, stopQuest, emit }) {
 			<div className={classes.grow}/>
 			<Button className={classes.button} disabled={!questPaused} variant="contained" color="secondary"
 							onClick={stopQuest}>Завершить</Button>
+			<Button className={classes.button} variant="contained" color="secondary"
+							onClick={switchLight}>Включить свет</Button>
 			<Button className={classes.button} variant="contained" color="secondary" onClick={handleReset}>Reset</Button>
 		</>
 	)
@@ -27,6 +30,7 @@ export function HeaderComponent({ questPaused, stopQuest, emit }) {
 HeaderComponent.propTypes = {
 	questPaused: PropTypes.bool,
 	stopQuest: PropTypes.func.isRequired,
+	switchLight: PropTypes.func.isRequired,
 	emit: PropTypes.func.isRequired,
 };
 
@@ -41,6 +45,7 @@ export const mapStateToProps = (state) => ({
 export const mapDispatchToProps = {
 	stopQuest: () => setStopModalOpenedAction(true),
 	emit: ActionHelper.emit,
+	switchLight: switchLightAction
 };
 
 export const Header = connect(mapStateToProps, mapDispatchToProps)(HeaderComponent);
