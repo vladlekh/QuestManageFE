@@ -75,12 +75,12 @@ export class SagaHelper {
 					socket.emit("rfid.accessed");
 				})
 			}
-			if (roomName === ROOMS.room2 && c.name === FIXED_NAMES.signaling) {
-				socket.on(FIXED_REPLIES.lightSignaling, () => handler(playSoundEffect(SOUND_EFFECTS.signaling, true)));
-			}
-			if (roomName === ROOMS.room2 && c.name === FIXED_NAMES.signalingstop) {
-				socket.on(FIXED_REPLIES.lightSignalingIsStopped, () => handler(stopAudioSmoothly(SOUND_EFFECTS.signaling)));
-			}
+			// if (roomName === ROOMS.room2 && c.name === FIXED_NAMES.signaling) {
+			// 	socket.on(FIXED_REPLIES.lightSignaling, () => handler(playSoundEffect(SOUND_EFFECTS.signaling, true)));
+			// }
+			// if (roomName === ROOMS.room2 && c.name === FIXED_NAMES.signalingstop) {
+			// 	socket.on(FIXED_REPLIES.lightSignalingIsStopped, () => handler(stopAudioSmoothly(SOUND_EFFECTS.signaling)));
+			// }
 			if (roomName === ROOMS.room3 && c.name === FIXED_NAMES.coffin) {
 				socket.on(FIXED_REPLIES.coffinIsOpened, () => handler(playSoundEffect(SOUND_EFFECTS.bricks)));
 			}

@@ -19,11 +19,6 @@ export const SOUND_EFFECTS = {
     endpoint: 'coffin-slide',
     gainValue: 1,
   },
-  signaling: {
-    name: 'signaling',
-    endpoint: 'signaling',
-    gainValue: 1,
-  },
   lock: {
     name: 'lock',
     endpoint: 'lock',
