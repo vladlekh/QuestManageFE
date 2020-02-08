@@ -8,6 +8,7 @@ import { StartQuestModal } from '../feature/start-quest';
 import { StopQuestModal } from '../feature/stop-quest';
 import { LayoutMenuItems } from './LayoutMenuItems';
 import { LayoutAudioItems } from './LayoutAudioItems';
+import { selectQuestIsInitialized } from '../store/quest/selectors';
 
 export function LayoutComponent({ children, menuConfig, questIsInitialized }) {
   const classes = useStyles();
@@ -52,7 +53,7 @@ export function LayoutComponent({ children, menuConfig, questIsInitialized }) {
 }
 
 const mapStateToProps = state => ({
-  questIsInitialized: true,
+  questIsInitialized: selectQuestIsInitialized(state),
 });
 
 export const Layout = connect(mapStateToProps)(LayoutComponent);

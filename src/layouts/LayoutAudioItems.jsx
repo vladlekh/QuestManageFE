@@ -6,7 +6,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import PlayArrowIcon from '@material-ui/icons/PlayCircleOutline';
 import PauseIcon from '@material-ui/icons/PauseCircleOutline';
-import { playAudio, stopAudioSmoothly } from '../middleware/audio.middleware';
+import { playAudio, stopAudioSmoothly } from '../middleware/audio.actions';
 import clsx from 'clsx';
 
 const useStyles = makeStyles(theme => ({

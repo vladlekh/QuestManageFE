@@ -5,6 +5,9 @@ import { reduce } from "lodash";
 import { ActionHelper } from "./action.helper";
 import { switchLightAction } from "../store/light/actions/switch-light.action";
 import { portReadyAction, portConnectionAction } from '../store/ports/actions';
+import { FIXED_REPLIES, ROOMS, SOUND_EFFECTS } from '../constants';
+import { FIXED_NAMES } from '../constants/fixed-names';
+import { playSoundEffect, stopAudioSmoothly } from '../middleware/audio.actions';
 
 export class SagaHelper {
 	static SOCKET_SERVER_URL = 'http://localhost:1081';
@@ -59,24 +62,48 @@ export class SagaHelper {
 			port: path,
 			message: 'Подключен'
 		})));
+		socket.on('arduinoStarted', ({ path }) => handler(portReadyAction(path)));
+
 		reduce(controls, (acc, { socketReply, actionReply, ...c }) => {
-			if (roomName === 'room5' && c.name === 'chair') {
-				socket.on("waterFlow", () => {
+			if (roomName === ROOMS.room5 && c.name === FIXED_NAMES.chair) {
+				socket.on(FIXED_REPLIES.waterflow, () => {
 					socket.emit("water.flow");
 				})
 			}
-			if (roomName === 'room5' && c.name === 'rfidAccess') {
+			if (roomName === ROOMS.room5 && c.name === FIXED_NAMES.rfidAccess) {
 				socket.on(socketReply, () => {
 					socket.emit("rfid.accessed");
 				})
 			}
+			if (roomName === ROOMS.room2 && c.name === FIXED_NAMES.signaling) {
+				socket.on(FIXED_REPLIES.lightSignaling, () => handler(playSoundEffect(SOUND_EFFECTS.signaling, true)));
+			}
+			if (roomName === ROOMS.room2 && c.name === FIXED_NAMES.signalingstop) {
+				socket.on(FIXED_REPLIES.lightSignalingIsStopped, () => handler(stopAudioSmoothly(SOUND_EFFECTS.signaling)));
+			}
+			if (roomName === ROOMS.room3 && c.name === FIXED_NAMES.coffin) {
+				socket.on(FIXED_REPLIES.coffinIsOpened, () => handler(playSoundEffect(SOUND_EFFECTS.bricks)));
+			}
+			if (roomName === ROOMS.room3 && c.name === FIXED_NAMES.coffinSlide) {
+				socket.on(FIXED_REPLIES.thirdDoorIsOpened, () => handler(playSoundEffect(SOUND_EFFECTS.coffinSlide)));
+			}
+			if (roomName === ROOMS.room4 && c.name === FIXED_NAMES.safeUp) {
+				socket.on(FIXED_REPLIES.safeUpAllowed, () => handler(playSoundEffect(SOUND_EFFECTS.lock)));
+			}
+			if (roomName === ROOMS.room4 && c.name === FIXED_NAMES.lion) {
+				socket.on(FIXED_REPLIES.lionIsOpened, () => handler(playSoundEffect(SOUND_EFFECTS.lion)));
+			}
+			if (roomName === ROOMS.room5 && c.name === FIXED_NAMES.chair) {
+				socket.on(FIXED_REPLIES.chairIsOpened, () => handler(playSoundEffect(SOUND_EFFECTS.lock2)));
+			}
+
 			socket.on(socketReply, (data) => {
 				console.log('DATA', data);
 				handler({ type: actionReply })
 			});
-			socket.on('arduinoStarted', ({ path }) => handler(portReadyAction(path)));
 			return acc;
 		}, {});
+
 		return () => {
 			socket.close();
 		};
