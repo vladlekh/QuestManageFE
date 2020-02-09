@@ -11,6 +11,7 @@ export class ActionHelper {
 		turnLight: 'turn.light',
 		startLight: 'start.light',
 		switchLight: 'switch.light',
+		startQuest: 'start.quest',
 		reset: 'reset',
 	};
 
