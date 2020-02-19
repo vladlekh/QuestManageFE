@@ -2,13 +2,14 @@ import React from 'react';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import { AppBar, CssBaseline, Divider, Drawer, IconButton, Toolbar } from '@material-ui/core';
+import { AppBar, CssBaseline, Divider, Drawer, Toolbar } from '@material-ui/core';
 import { Header } from '../feature/header';
 import { StartQuestModal } from '../feature/start-quest';
 import { StopQuestModal } from '../feature/stop-quest';
 import { LayoutMenuItems } from './LayoutMenuItems';
 import { LayoutAudioItems } from './LayoutAudioItems';
 import { selectQuestIsInitialized } from '../store/quest/selectors';
+import { Logger } from '../feature/logger';
 
 export function LayoutComponent({ children, menuConfig, questIsInitialized }) {
   const classes = useStyles();
@@ -41,6 +42,7 @@ export function LayoutComponent({ children, menuConfig, questIsInitialized }) {
       )}
       <main className={classes.content}>
         {children}
+        <Logger/>
       </main>
       <AppBar position="fixed" className={clsx(classes.appBar, classes.bottomBar, {
         [classes.appBarShift]: questIsInitialized,

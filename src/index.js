@@ -16,7 +16,7 @@ ReactDOM.render(
 		<SnackbarProvider anchorOrigin={{
 			vertical: 'bottom',
 			horizontal: 'left'
-		}}>
+		}} preventDuplicate>
 			<ThemeProvider theme={defaultTheme}>
 				<App/>
 			</ThemeProvider>

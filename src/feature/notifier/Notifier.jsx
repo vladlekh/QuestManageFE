@@ -45,8 +45,8 @@ class NotifierComponent extends Component {
 					if (options.onClose) {
 						options.onClose(event, reason, key);
 					}
-					// Dispatch action to remove snackbar from redux store
-					this.props.removeNotification(key);
+					// // Dispatch action to remove snackbar from redux store
+					// this.props.removeNotification(key);
 				}
 			});
 			// Keep track of snackbars that we've displayed

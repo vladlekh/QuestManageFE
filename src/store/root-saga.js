@@ -4,6 +4,7 @@ import { questSaga } from './quest/sagas';
 import { lightSaga } from './light/sagas';
 import { portsSaga } from './ports/sagas';
 import { audioSaga } from './audio/sagas';
+import { loggerSaga } from './logger/sagas';
 
 export function* rootSaga() {
   yield all([
@@ -12,5 +13,6 @@ export function* rootSaga() {
     fork(lightSaga),
     fork(portsSaga),
     fork(audioSaga),
+    fork(loggerSaga),
   ]);
 }

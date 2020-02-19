@@ -8,7 +8,7 @@ export const putNotificationAction = notification => {
 		payload: {
 			notification: {
 				...notification,
-				key: key || new Date().getTime() + Math.random(),
+				key: key,
 			},
 		}
 	};
