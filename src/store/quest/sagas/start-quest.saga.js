@@ -7,7 +7,7 @@ import { selectQuestPersons } from "../selectors";
 export function* startQuestSaga() {
 	const persons = yield select(selectQuestPersons);
 	yield put(ActionHelper.emit(ActionHelper.eventEnum.setPersons, persons));
-	yield delay(1000);
+	yield delay(5000);
 	yield put(ActionHelper.emit(ActionHelper.eventEnum.startQuest));
 	yield call(RouterHelper.goToFirstRoom);
 	yield put(startLightAction());
