@@ -6,5 +6,7 @@ export const FIXED_NAMES = {
   signaling: 'signaling',
   signalingstop: 'signalingstop',
   safeUp: 'safeUp',
+  stand: 'stand',
   lion: 'lion',
+  motor1: 'motor1'
 };

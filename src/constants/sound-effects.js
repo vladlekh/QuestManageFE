@@ -2,12 +2,12 @@ export const SOUND_EFFECTS = {
   room1: {
     name: 'fire',
     endpoint: 'room1/fire',
-    gainValue: 0.1,
+    gainValue: 0.8,
   },
   room4: {
     name: 'watches',
     endpoint: 'room4/watches',
-    gainValue: 0.1,
+    gainValue: 0.8,
   },
   bricks: {
     name: 'bricks',
@@ -32,6 +32,11 @@ export const SOUND_EFFECTS = {
   lion: {
     name: 'lion',
     endpoint: 'lion',
+    gainValue: 1,
+  },
+  water: {
+    name: 'water',
+    endpoint: 'water',
     gainValue: 1,
   },
 };

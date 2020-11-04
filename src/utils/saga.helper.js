@@ -87,14 +87,17 @@ export class SagaHelper {
 			if (roomName === ROOMS.room3 && c.name === FIXED_NAMES.coffinSlide) {
 				socket.on(FIXED_REPLIES.thirdDoorIsOpened, () => handler(playSoundEffect(SOUND_EFFECTS.coffinSlide)));
 			}
-			if (roomName === ROOMS.room4 && c.name === FIXED_NAMES.safeUp) {
-				socket.on(FIXED_REPLIES.safeUpAllowed, () => handler(playSoundEffect(SOUND_EFFECTS.lock)));
+			if (roomName === ROOMS.room2 && c.name === FIXED_NAMES.stand) {
+				socket.on(FIXED_REPLIES.standIsOpened, () => handler(playSoundEffect(SOUND_EFFECTS.lock)));
 			}
 			if (roomName === ROOMS.room4 && c.name === FIXED_NAMES.lion) {
 				socket.on(FIXED_REPLIES.lionIsOpened, () => handler(playSoundEffect(SOUND_EFFECTS.lion)));
 			}
 			if (roomName === ROOMS.room5 && c.name === FIXED_NAMES.chair) {
 				socket.on(FIXED_REPLIES.chairIsOpened, () => handler(playSoundEffect(SOUND_EFFECTS.lock2)));
+			}
+			if (roomName === ROOMS.room5 && c.name === FIXED_NAMES.motor1) {
+				socket.on(FIXED_REPLIES.motor1Started, () => handler(playSoundEffect(SOUND_EFFECTS.water)));
 			}
 
 			socket.on(socketReply, (data) => {

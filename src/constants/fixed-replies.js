@@ -7,4 +7,6 @@ export const FIXED_REPLIES = {
   lionIsOpened: 'lionIsOpened',
   chairIsOpened: 'chairIsOpened',
   lightSignalingIsStopped: 'lightSignalingIsStopped',
+  standIsOpened: 'standIsOpened',
+  motor1Started: 'motor1Started'
 }

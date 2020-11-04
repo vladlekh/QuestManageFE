@@ -10,7 +10,7 @@ export const audioMiddleware = (store) => {
   return next => async (action) => {
     switch (action.type) {
       case PLAY_AUDIO: {
-        await player.playSound(action.payload, .8, true);
+        await player.playSound(action.payload, .3, true);
         if (_.has(SOUND_EFFECTS, action.payload.name)) {
           const { gainValue, ...sound } = { ...SOUND_EFFECTS[action.payload.name] };
           await player.playSound(sound, gainValue, true);
