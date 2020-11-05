@@ -99,6 +99,12 @@ export class SagaHelper {
 			if (roomName === ROOMS.room5 && c.name === FIXED_NAMES.motor1) {
 				socket.on(FIXED_REPLIES.motor1Started, () => handler(playSoundEffect(SOUND_EFFECTS.water)));
 			}
+			if (roomName === ROOMS.room5 && c.name === FIXED_NAMES.acid) {
+				socket.on(FIXED_REPLIES.acid, () => handler(playSoundEffect(SOUND_EFFECTS.water)));
+			}
+			if (roomName === ROOMS.room5 && c.name === FIXED_NAMES.antiAcid) {
+				socket.on(FIXED_REPLIES.antiAcid, () => handler(playSoundEffect(SOUND_EFFECTS.water)));
+			}
 
 			socket.on(socketReply, (data) => {
 				console.log('DATA', data);

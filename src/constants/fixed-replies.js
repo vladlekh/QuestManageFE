@@ -8,5 +8,7 @@ export const FIXED_REPLIES = {
   chairIsOpened: 'chairIsOpened',
   lightSignalingIsStopped: 'lightSignalingIsStopped',
   standIsOpened: 'standIsOpened',
-  motor1Started: 'motor1Started'
+  motor1Started: 'motor1Started',
+  acid: 'Acid',
+  antiAcid: 'Anti-Acid',
 }

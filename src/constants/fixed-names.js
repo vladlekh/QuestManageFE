@@ -8,5 +8,7 @@ export const FIXED_NAMES = {
   safeUp: 'safeUp',
   stand: 'stand',
   lion: 'lion',
-  motor1: 'motor1'
+  motor1: 'motor1',
+  acid: 'acid',
+  antiAcid: 'anti-acid'
 };
