@@ -12,7 +12,7 @@
     "lodash": "^4.17.15",
     "notistack": "^0.8.9",
     "prop-types": "^15.7.2",
-    "qs": "^6.7.0",
+    "qs": "^6.7.3",
     "react": "^16.8.6",
     "react-compound-timer": "^1.1.15",
     "react-dom": "^16.8.6",
